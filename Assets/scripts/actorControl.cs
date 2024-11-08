@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 
 public class actorControl : MonoBehaviour
 {
+    public Material mat;
     public Animator anm;
     public cam_shake_controller cam_shake;
     public obstacleManager mgr;
@@ -45,14 +46,29 @@ public class actorControl : MonoBehaviour
         lasty = mousepos.y;
         transform.position = new Vector3(mousepos.x, mousepos.y, 0);
         transform.rotation = Quaternion.Euler(new Vector3(0,0,dy*280));
-        if (buffed)
+        float buftimeleft = buffend - Time.realtimeSinceStartup;
+        if (buftimeleft < 0)
         {
-            if (Time.realtimeSinceStartup > buffend)
+            if (buffed)
             {
                 buffed = false;
                 update_mgr_movespeed();
+                mat.SetFloat("_alpha", 0);
             }
         }
+        else
+        {
+            if (buftimeleft > 2)
+            {
+                mat.SetFloat("_alpha", 1);
+            }
+            else
+            {
+                mat.SetFloat("_alpha", Mathf.Cos(buftimeleft * 4 * MathF.PI) * 0.2f + 0.6f);
+            }
+        }
+
+
         if (mgrbasespeed < 4)
         {
             mgrbasespeed += 1f*Time.deltaTime;

@@ -14,13 +14,13 @@ public class UIdisp : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        u = gameObject.GetComponent<TextMeshProUGUI>();
+        //u = gameObject.GetComponent<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        u.text = "Health:"+player.health.ToString() + "\r\nScore:" + mgr.score.ToString("F0") + "\r\nBasespeed:" + player.mgrbasespeed.ToString("F0") + "\r\nBuff time left:" + Mathf.Max(0,(player.buffend - Time.realtimeSinceStartup)).ToString("F1");
+        //u.text = "Health:"+player.health.ToString() + "\r\nScore:" + mgr.score.ToString("F0") + "\r\nBasespeed:" + player.mgrbasespeed.ToString("F0") + "\r\nBuff time left:" + Mathf.Max(0,(player.buffend - Time.realtimeSinceStartup)).ToString("F1");
         int sco = (int)mgr.score;
         for (int i = 0; i < dgroup.Length; i++)
         {
