@@ -6,6 +6,7 @@ TagManager:
   tags:
   - coinUp
   - coinDown
+  - obsMgr
   layers:
   - Default
   - TransparentFX

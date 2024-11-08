@@ -20,16 +20,25 @@ public class obstacleObj : MonoBehaviour
     public void setManager(obstacleManager m)
     {
         mgr = m;
+        mgr.resetEvent.AddListener(this.deleteself);
     }
 
     // Update is called once per frame
     void Update()
     {
         //setDist(dist);
-        transform.position += new Vector3(-mgr.movespeed * Time.deltaTime, 0, 0);
+        if (mgr.start)
+        {
+            transform.position += new Vector3(-mgr.movespeed * Time.deltaTime, 0, 0);
+        }
         if (transform.position.x < -10)
         {
-            Destroy(gameObject);
+            deleteself();
         }
+    }
+    private void deleteself()
+    {
+        mgr.resetEvent.RemoveListener(this.deleteself);
+        Destroy(gameObject);
     }
 }

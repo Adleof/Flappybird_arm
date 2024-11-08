@@ -8,6 +8,7 @@ public class coinBehavior : MonoBehaviour
     public void setMgr(obstacleManager m)
     {
         mgr = m;
+        mgr.resetEvent.AddListener(this.deleteself);
     }
 
     private void Start()
@@ -18,10 +19,18 @@ public class coinBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += new Vector3(-mgr.movespeed * Time.deltaTime, 0, 0);
+        if (mgr.start)
+        {
+            transform.position += new Vector3(-mgr.movespeed * Time.deltaTime, 0, 0);
+        }
         if (transform.position.x < -10)
         {
-            Destroy(gameObject);
+            deleteself();
         }
+    }
+    private void deleteself()
+    {
+        mgr.resetEvent.RemoveListener(this.deleteself);
+        Destroy(gameObject);
     }
 }

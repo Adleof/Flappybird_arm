@@ -9,11 +9,6 @@ public class healthDisp : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < 10; i++)
-        {
-            childs[i] = transform.GetChild(i).gameObject;
-        }
-        curhealth = 10;
     }
     public void decreaseHealth()
     {
@@ -26,6 +21,10 @@ public class healthDisp : MonoBehaviour
     }
     public void recover()
     {
+        for (int i = 0; i < 10; i++)
+        {
+            childs[i] = transform.GetChild(i).gameObject;
+        }
         for (int i = 0; i < 10; i++)
         {
             childs[i].SetActive(true);

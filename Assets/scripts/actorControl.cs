@@ -14,12 +14,32 @@ public class actorControl : MonoBehaviour
     private Vector2 mousepos;
     private Rigidbody rb;
     public bool buffed;
-    private float speedgain;
     public float buffend;
     public float mgrbasespeed;
     public int health;
     private float lasty;
+    public bool start;
     // Start is called before the first frame update
+
+    public void startplayer()
+    {
+        start = true;
+    }
+    public void resetplayer()
+    {
+        buffed = false;
+        mgrbasespeed = 4f;
+        update_mgr_movespeed();
+        mat.SetFloat("_alpha", 0);
+        health = 10;
+        buffend = 0;
+        transform.position = new Vector3(-5.68f, -0.03f, 0.57f);
+        transform.rotation = Quaternion.identity;
+    }
+    public void stopplayer()
+    {
+        start = false;
+    }
     public void mouse_pos(InputAction.CallbackContext context)
     {
         mousepos = context.ReadValue<Vector2>();
@@ -36,43 +56,51 @@ public class actorControl : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody>();
         buffed = false;
         mgrbasespeed = 4f;
-        update_mgr_movespeed();
+        update_mgr_movespeed(); 
+        start = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        float dy = mousepos.y - lasty;
-        lasty = mousepos.y;
-        transform.position = new Vector3(mousepos.x, mousepos.y, 0);
-        transform.rotation = Quaternion.Euler(new Vector3(0,0,dy*280));
-        float buftimeleft = buffend - Time.realtimeSinceStartup;
-        if (buftimeleft < 0)
+        if (start)
         {
-            if (buffed)
+            float dy = mousepos.y - lasty;
+            lasty = mousepos.y;
+            transform.position = new Vector3(mousepos.x, mousepos.y, 0);
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, dy * 280));
+            float buftimeleft = buffend - Time.realtimeSinceStartup;
+            if (buftimeleft < 0)
             {
-                buffed = false;
-                update_mgr_movespeed();
-                mat.SetFloat("_alpha", 0);
-            }
-        }
-        else
-        {
-            if (buftimeleft > 2)
-            {
-                mat.SetFloat("_alpha", 1);
+                if (buffed)
+                {
+                    buffed = false;
+                    update_mgr_movespeed();
+                    mat.SetFloat("_alpha", 0);
+                }
             }
             else
             {
-                mat.SetFloat("_alpha", Mathf.Cos(buftimeleft * 4 * MathF.PI) * 0.2f + 0.6f);
+                if (buftimeleft > 2.127f)
+                {
+                    mat.SetFloat("_alpha", 1);
+                }
+                else if (buftimeleft > 0.125f)
+                {
+                    mat.SetFloat("_alpha", Mathf.Sin(buftimeleft * 4 * MathF.PI) * 0.2f + 0.8f);
+                }
+                else
+                {
+                    mat.SetFloat("_alpha", buftimeleft * 8f);
+                }
             }
-        }
 
 
-        if (mgrbasespeed < 4)
-        {
-            mgrbasespeed += 1f*Time.deltaTime;
-            update_mgr_movespeed();
+            if (mgrbasespeed < 4)
+            {
+                mgrbasespeed += 1f * Time.deltaTime;
+                update_mgr_movespeed();
+            }
         }
     }
     private void FixedUpdate()

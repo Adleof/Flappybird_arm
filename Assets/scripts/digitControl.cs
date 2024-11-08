@@ -9,16 +9,19 @@ public class digitControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        curnum = 0;
-        for (int i = 0; i < 10; i++)
-        {
-            childs[i] = transform.GetChild(i).gameObject;
-        }
-        dispNum(-1);
     }
     /*
      * -1 for no display
      */
+    public void resetDigits()
+    {
+        curnum = -1;
+        for (int i = 0; i < 10; i++)
+        {
+            childs[i] = transform.GetChild(i).gameObject;
+            childs[i].SetActive(false);
+        }
+    }
     public void dispNum(int num)
     {
         if (num >= 0 && num <= 9)
